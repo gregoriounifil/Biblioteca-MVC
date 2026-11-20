@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Novo livro</title></head>
+<body>
+<nav th:replace="~{fragmentos/nav :: menu}"></nav>
+<h1>Novo livro</h1>
+<p th:if="${autores.isEmpty() or categorias.isEmpty()}">
+    Cadastre pelo menos um <a th:href="@{/autores/novo}">autor</a> e uma
+    <a th:href="@{/categorias/novo}">categoria</a> antes de criar um livro.
+</p>
+<form th:action="@{/livros}" method="post" th:unless="${autores.isEmpty() or categorias.isEmpty()}">
+    <p><label>Título: <input type="text" name="titulo" required></label></p>
+    <p><label>ISBN: <input type="text" name="isbn" required></label></p>
+    <p><label>Autor:
+        <select name="autorIndice">
+            <option th:each="a, st : ${autores}" th:value="${st.index}" th:text="${a.nome}"></option>
+        </select></label></p>
+    <p><label>Categoria:
+        <select name="categoriaIndice">
+            <option th:each="c, st : ${categorias}" th:value="${st.index}" th:text="${c.genero}"></option>
+        </select></label></p>
+    <button type="submit">Salvar</button>
+    <a th:href="@{/livros}">Cancelar</a>
+</form>
+</body>
+</html>

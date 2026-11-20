@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Livros</title></head>
+<body>
+<nav th:replace="~{fragmentos/nav :: menu}"></nav>
+<h1>Livros</h1>
+<a th:href="@{/livros/novo}">Novo livro</a>
+<table border="1" cellpadding="6">
+    <tr><th>Título</th><th>ISBN</th><th>Autor</th><th>Categoria</th><th></th></tr>
+    <tr th:each="l, st : ${livros}">
+        <td th:text="${l.titulo}"></td>
+        <td th:text="${l.isbn}"></td>
+        <td th:text="${l.autor?.nome}"></td>
+        <td th:text="${l.categoria?.genero}"></td>
+        <td>
+            <form th:action="@{/livros/excluir/{i}(i=${st.index})}" method="post">
+                <button type="submit">Excluir</button>
+            </form>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

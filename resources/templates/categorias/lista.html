@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Categorias</title></head>
+<body>
+<nav th:replace="~{fragmentos/nav :: menu}"></nav>
+<h1>Categorias</h1>
+<a th:href="@{/categorias/novo}">Nova categoria</a>
+<table border="1" cellpadding="6">
+    <tr><th>Gênero</th><th></th></tr>
+    <tr th:each="c, st : ${categorias}">
+        <td th:text="${c.genero}"></td>
+        <td>
+            <form th:action="@{/categorias/excluir/{i}(i=${st.index})}" method="post">
+                <button type="submit">Excluir</button>
+            </form>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

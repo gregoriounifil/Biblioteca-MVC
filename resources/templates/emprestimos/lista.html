@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Empréstimos</title></head>
+<body>
+<nav th:replace="~{fragmentos/nav :: menu}"></nav>
+<h1>Empréstimos</h1>
+<a th:href="@{/emprestimos/novo}">Novo empréstimo</a>
+<table border="1" cellpadding="6">
+    <tr><th>Usuário</th><th>Livro</th><th>Retirada</th><th>Devolução</th><th></th></tr>
+    <tr th:each="e, st : ${emprestimos}">
+        <td th:text="${e.usuario?.nome}"></td>
+        <td th:text="${e.livro?.titulo}"></td>
+        <td th:text="${#temporals.format(e.dataRetirada, 'dd/MM/yyyy')}"></td>
+        <td th:text="${#temporals.format(e.dataDevolucao, 'dd/MM/yyyy')}"></td>
+        <td>
+            <form th:action="@{/emprestimos/excluir/{i}(i=${st.index})}" method="post">
+                <button type="submit">Excluir</button>
+            </form>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

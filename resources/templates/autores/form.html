@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Novo autor</title></head>
+<body>
+<nav th:replace="~{fragmentos/nav :: menu}"></nav>
+<h1>Novo autor</h1>
+<form th:action="@{/autores}" th:object="${autor}" method="post">
+    <p><label>Nome: <input type="text" th:field="*{nome}" required></label></p>
+    <p><label>Nacionalidade: <input type="text" th:field="*{nacionalidade}"></label></p>
+    <p><label>Obras publicadas: <input type="text" th:field="*{obrasPublicadas}"></label></p>
+    <button type="submit">Salvar</button>
+    <a th:href="@{/autores}">Cancelar</a>
+</form>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Usuários</title></head>
+<body>
+<nav th:replace="~{fragmentos/nav :: menu}"></nav>
+<h1>Usuários</h1>
+<a th:href="@{/usuarios/novo}">Novo usuário</a>
+<table border="1" cellpadding="6">
+    <tr><th>ID</th><th>Nome</th><th></th></tr>
+    <tr th:each="u, st : ${usuarios}">
+        <td th:text="${u.id}"></td>
+        <td th:text="${u.nome}"></td>
+        <td>
+            <form th:action="@{/usuarios/excluir/{i}(i=${st.index})}" method="post">
+                <button type="submit">Excluir</button>
+            </form>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

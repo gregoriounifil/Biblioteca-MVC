@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Novo empréstimo</title></head>
+<body>
+<nav th:replace="~{fragmentos/nav :: menu}"></nav>
+<h1>Novo empréstimo</h1>
+<p th:if="${usuarios.isEmpty() or livros.isEmpty()}">
+    Cadastre pelo menos um <a th:href="@{/usuarios/novo}">usuário</a> e um
+    <a th:href="@{/livros/novo}">livro</a> antes de registrar um empréstimo.
+</p>
+<form th:action="@{/emprestimos}" method="post" th:unless="${usuarios.isEmpty() or livros.isEmpty()}">
+    <p><label>Usuário:
+        <select name="usuarioIndice">
+            <option th:each="u, st : ${usuarios}" th:value="${st.index}" th:text="${u.nome}"></option>
+        </select></label></p>
+    <p><label>Livro:
+        <select name="livroIndice">
+            <option th:each="l, st : ${livros}" th:value="${st.index}" th:text="${l.titulo}"></option>
+        </select></label></p>
+    <p><label>Data de retirada: <input type="date" name="dataRetirada" th:value="${dataRetirada}" required></label></p>
+    <p><label>Data de devolução: <input type="date" name="dataDevolucao" th:value="${dataDevolucao}" required></label></p>
+    <button type="submit">Salvar</button>
+    <a th:href="@{/emprestimos}">Cancelar</a>
+</form>
+</body>
+</html>

@@ -1,56 +1,51 @@
-
 package com.example.biblioteca.controller;
 
-import com.example.biblioteca.model.*;
-
+import com.example.biblioteca.model.Livro;
+import com.example.biblioteca.repository.BibliotecaRepositorio;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.ui.Model;
-
-import java.time.LocalDate;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/livros")
 public class LivroController {
 
-    @GetMapping
-    public String inicio() {
-        return "livros/inicio";
+    private final BibliotecaRepositorio repositorio;
+
+    public LivroController(BibliotecaRepositorio repositorio) {
+        this.repositorio = repositorio;
     }
 
-    @GetMapping("/livro")
-    public String exibirLivro(Model model) {
+    @GetMapping
+    public String listar(Model model) {
+        model.addAttribute("livros", repositorio.getLivros());
+        return "livros/lista";
+    }
 
-        Autor autor = new Autor();
-        autor.setNome("Machado de Assis");
-        autor.setNacionalidade("Brasileiro");
-        autor.setObrasPublicadas("Dom Casmurro");
+    @GetMapping("/novo")
+    public String novo(Model model) {
+        model.addAttribute("autores", repositorio.getAutores());
+        model.addAttribute("categorias", repositorio.getCategorias());
+        return "livros/form";
+    }
 
-        Categoria categoria = new Categoria();
-        categoria.setGenero("Romance");
-
+    @PostMapping
+    public String salvar(@RequestParam String titulo,
+                         @RequestParam String isbn,
+                         @RequestParam int autorIndice,
+                         @RequestParam int categoriaIndice) {
         Livro livro = new Livro();
-        livro.setTitulo("Dom Casmurro");
-        livro.setIsbn("978-85-00-00000-00");
-        livro.setAutor(autor);
-        livro.setCategoria(categoria);
+        livro.setTitulo(titulo);
+        livro.setIsbn(isbn);
+        livro.setAutor(repositorio.getAutores().get(autorIndice));
+        livro.setCategoria(repositorio.getCategorias().get(categoriaIndice));
+        repositorio.getLivros().add(livro);
+        return "redirect:/livros";
+    }
 
-        model.addAttribute("livro", livro);
-
-        Usuario usuario = new Usuario();
-        usuario.setNome("Gregório");
-        usuario.setId("1");
-
-        Emprestimo emprestimo = new Emprestimo();
-        emprestimo.setUsuario(usuario);
-        emprestimo.setLivro(livro);
-        emprestimo.setDataRetirada(LocalDate.now());
-        emprestimo.setDataDevolucao(LocalDate.now().plusDays(7));
-
-        model.addAttribute("livro", livro);
-        model.addAttribute("emprestimo", emprestimo);
-
-        return "livro";
+    @PostMapping("/excluir/{indice}")
+    public String excluir(@PathVariable int indice) {
+        BibliotecaRepositorio.remover(repositorio.getLivros(), indice);
+        return "redirect:/livros";
     }
 }

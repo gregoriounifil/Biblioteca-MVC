@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Novo usuário</title></head>
+<body>
+<nav th:replace="~{fragmentos/nav :: menu}"></nav>
+<h1>Novo usuário</h1>
+<form th:action="@{/usuarios}" th:object="${usuario}" method="post">
+    <p><label>ID: <input type="text" th:field="*{id}" required></label></p>
+    <p><label>Nome: <input type="text" th:field="*{nome}" required></label></p>
+    <button type="submit">Salvar</button>
+    <a th:href="@{/usuarios}">Cancelar</a>
+</form>
+</body>
+</html>
